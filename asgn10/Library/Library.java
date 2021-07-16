@@ -27,18 +27,21 @@ class Book implements Serializable
 
 public class Library
 {
-   void writeToFile(String fileName, Book b)
+   
+   void writeToFile(String fileName, Book[] b)
    {
       try{
       
-         FileOutputStream fout = new FileOutputStream(fileName);
+         FileOutputStream fout = new FileOutputStream(fileName, true);
          ObjectOutputStream oout = new ObjectOutputStream(fout);
          
-         oout.writeObject(b);
+         for(int i = 0; i< b.length; ++i) 
+            oout.writeObject(b[i]);
+         //oout.flush();
          
          oout.close();
          fout.close();
-      
+         
       } catch (FileNotFoundException e) {
             System.out.println("File not found");
       } catch (IOException e) {
@@ -84,12 +87,31 @@ public class Library
    {
       Library l1 = new Library();
       
-      Book b1 = new Book("Dev1", "book1", "ed1", 500);
-      l1.writeToFile("output.txt", b1);
-      System.out.println(b1);
+      Book[] b = new Book[10];
       
-      Book b2 = new Book();
-      b2 = l1.readFromFile("output.txt", "book1");
-      System.out.println(b2);
+      for(int i = 0; i < 10; ++i)
+      {
+         b[i] = new Book("Dev" + i, "book" + i, "ed" + i, 500 + i * 100);
+      }
+      l1.writeToFile("output.txt", b);
+      
+      //System.out.println(b1);
+      
+      // Book b2 = new Book("Dev2", "book2", "ed2", 2500);
+//       l1.writeToFile(fout, b2);
+//       System.out.println(b2);
+      
+      // Book b3 = l1.readFromFile("output.txt", "book1");
+//       System.out.println(b3);
+//       
+//       Book b4 = l1.readFromFile("output.txt", "book2");
+//       System.out.println(b4);
+      
+      for(int i = 0; i < 10; ++i)
+      {
+         Book b3 = l1.readFromFile("output.txt", "book" + i);
+         System.out.println(b3);
+      }
+      
    }
 }
